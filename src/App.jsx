@@ -1,81 +1,23 @@
 import { useState } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Navbar,
-  Nav,
-  Button,
-  FormControl,
-  InputGroup,
-} from "react-bootstrap";
-import {
-  BsPlusSquare,
-  BsTrash,
-  BsPencilSquare,
-  BsSearch,
-} from "react-icons/bs";
+import { Container, Row } from "react-bootstrap";
+import { AppBar } from "./components/AppBar";
+import { SideBar } from "./components/Sidebar";
+import { Workspace } from "./components/Workspace";
 
 function App() {
   const [notes, setNotes] = useState([
-    { title: "Note 1", content: "Note 1 content" },
-    { title: "Note 2", content: "Note 2 content" },
-    { title: "Note 3", content: "Note 3 content" },
+    { id: 1, title: "Lorem lorem lorevv", description: "Note 1 content" },
+    { id: 2, title: "Note 2", description: "Note 2 content" },
+    { id: 3, title: "Note 3", description: "Note 3 content" },
   ]);
 
   return (
     <Container fluid>
-      <Navbar bg="light" expand="lg">
-        <Navbar.Toggle aria-controls="navbar-nav" />
-        <Navbar.Collapse id="navbar-nav">
-          <Nav className="mr-auto">
-            <Button variant="outline-primary" className="mr-2">
-              <BsPlusSquare className="mr-1" />
-              Add Note
-            </Button>
-            <Button variant="outline-danger" className="mr-2">
-              <BsTrash className="mr-1" />
-              Delete Note
-            </Button>
-            <Button variant="outline-secondary">
-              <BsPencilSquare className="mr-1" />
-              Edit Note
-            </Button>
-          </Nav>
-          <form className="d-flex ms-auto">
-            <InputGroup>
-              <FormControl
-                type="search"
-                placeholder="Search notes"
-                aria-label="Search notes"
-              />
-              <Button variant="outline-secondary">
-                <BsSearch />
-              </Button>
-            </InputGroup>
-          </form>
-        </Navbar.Collapse>
-      </Navbar>
+      <AppBar />
       <Row>
-        <Col md={2} className="bg-dark">
-          <div className="d-flex flex-column justify-content-between vh-100 text-white">
-            <div className="p-3">
-              {notes.map((note) => (
-                <div className="mb-2" key={note.title}>
-                  <Button variant="light" className="w-100 text-left">
-                    {note.title}
-                  </Button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </Col>
-        <Col md={10}>
-          <div className="p-3">
-            <h2 className="mb-3">Note title</h2>
-            <p className="lead">Note content</p>
-          </div>
-        </Col>
+        <SideBar notes={notes} />
+
+        <Workspace />
       </Row>
     </Container>
   );
