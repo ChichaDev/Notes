@@ -11,17 +11,21 @@ export const ListItem = ({ id, title, description }) => {
 
   const { selectedNoteId, setSelectedNoteId } = useContext(AppContext);
 
+  const isSelected = selectedNoteId === id;
+
   const handleClickNotes = () => {
     setSelected(!selected);
-    setSelectedNoteId(selected ? null : id);
+    setSelectedNoteId((prevSelectedNoteId) =>
+      prevSelectedNoteId === id ? null : id
+    );
     console.log(id);
   };
 
   return (
     <div className="mb-2">
       <Card
-        bg={selectedNoteId === id ? "secondary" : "light"}
-        text={selectedNoteId === id ? "white" : "dark"}
+        bg={isSelected ? "secondary" : "light"}
+        text={isSelected ? "white" : "dark"}
         border="secondary"
         onClick={handleClickNotes}
         className="hover-card"
