@@ -1,0 +1,15 @@
+.hover-card:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.hover-card:active {
+  transform: scale(0.95);
+}
+
+.selected-card {
+  background-color: black;
+  color: white;
+}
