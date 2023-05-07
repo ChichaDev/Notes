@@ -9,6 +9,8 @@ export const AppProvider = ({ children }) => {
   const [notes, setNotes] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [isNoteSelected, setIsNoteSelected] = useState(true);
+  const [searchValue, setSearchValue] = useState("");
+  const [hasFilteredNotes, setHasFilteredNotes] = useState(true);
 
   const getAllNotes = async () => {
     try {
@@ -44,6 +46,7 @@ export const AppProvider = ({ children }) => {
     const updatedNotes = await dbService.getAllNotes();
 
     setNotes(updatedNotes);
+
     console.log("Удалено из Базы");
   };
 
@@ -54,9 +57,25 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchValue(value);
+
+    const filteredNotes = notes.filter((note) =>
+      note.title.toLowerCase().includes(value.toLowerCase())
+    );
+    setNotes(filteredNotes);
+    setHasFilteredNotes(filteredNotes.length > 0);
+  };
+
   return (
     <AppContext.Provider
       value={{
+        hasFilteredNotes,
+        setHasFilteredNotes,
+        searchValue,
+        setSearchValue,
+        handleSearchChange,
         isNoteSelected,
         setIsNoteSelected,
         isEditing,

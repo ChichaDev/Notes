@@ -3,9 +3,12 @@ import { AppContext } from "../context/AppProvider";
 import ReactMarkdown from "react-markdown";
 import { Form } from "react-bootstrap";
 import { Col } from "react-bootstrap";
+import { Button } from "react-bootstrap";
+
+import { BsPencilSquare } from "react-icons/bs";
 
 export const Workspace = () => {
-  const { selectedNoteId, notes, handleNoteUpdate, isEditing } =
+  const { selectedNoteId, notes, handleNoteUpdate, isEditing, setIsEditing } =
     useContext(AppContext);
 
   const selectedNote = notes.find((note) => note.id === selectedNoteId);
@@ -44,12 +47,16 @@ export const Workspace = () => {
     handleNoteUpdate(updatedNote);
   };
 
+  const handleEditClick = () => {
+    setIsEditing(!isEditing);
+  };
+
   return (
     <Col md={9}>
-      <div>
+      <div className="d-flex flex-column align-items-center justify-content-center">
         {selectedNote ? (
           isEditing ? (
-            <div>
+            <div style={{ width: "100%", maxWidth: "600px" }}>
               <Form.Control
                 type="text"
                 value={title}
@@ -70,6 +77,13 @@ export const Workspace = () => {
         ) : (
           <p>Select a note from the list</p>
         )}
+        <Button
+          variant="outline-secondary"
+          onClick={handleEditClick}
+          className="mt-3"
+        >
+          <BsPencilSquare />
+        </Button>
       </div>
     </Col>
   );
