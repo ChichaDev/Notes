@@ -34,9 +34,7 @@ export const AppProvider = ({ children }) => {
 
     await dbService.addNewNote(newNote);
 
-    const updatedNotes = await dbService.getAllNotes();
-
-    setNotes(updatedNotes);
+    setNotes((prevNotes) => [...prevNotes, newNote]);
   };
 
   const handleNoteDelete = async () => {
@@ -46,8 +44,6 @@ export const AppProvider = ({ children }) => {
     const updatedNotes = await dbService.getAllNotes();
 
     setNotes(updatedNotes);
-
-    console.log("Удалено из Базы");
   };
 
   const handleNoteUpdate = async (updatedNote) => {

@@ -25,8 +25,6 @@ export const Workspace = () => {
     }
   }, [selectedNote, selectedNoteId]);
 
-  console.log("Workspace component");
-
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
 

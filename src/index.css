@@ -1,11 +1,14 @@
 body {
   margin: 0;
+  padding: 0;
   font-size: 16px;
 }
+
 .custom-input:focus {
   border-color: lightgray;
   box-shadow: 0 0 0 0.1rem rgba(128, 128, 128, 0.5);
 }
+
 .custom-input::-webkit-search-cancel-button {
   display: none;
   -webkit-appearance: none;
