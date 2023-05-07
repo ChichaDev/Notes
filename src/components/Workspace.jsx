@@ -8,8 +8,14 @@ import { Button } from "react-bootstrap";
 import { BsPencilSquare } from "react-icons/bs";
 
 export const Workspace = () => {
-  const { selectedNoteId, notes, handleNoteUpdate, isEditing, setIsEditing } =
-    useContext(AppContext);
+  const {
+    selectedNoteId,
+    notes,
+    handleNoteUpdate,
+    isEditing,
+    setIsEditing,
+    isNoteSelected,
+  } = useContext(AppContext);
 
   const selectedNote = notes.find((note) => note.id === selectedNoteId);
 
@@ -79,6 +85,7 @@ export const Workspace = () => {
           variant="outline-secondary"
           onClick={handleEditClick}
           className="mt-3"
+          disabled={isNoteSelected || notes.length === 0}
         >
           <BsPencilSquare />
         </Button>

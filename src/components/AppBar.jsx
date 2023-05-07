@@ -12,12 +12,8 @@ import { Container } from "react-bootstrap";
 export const AppBar = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const {
-    handleNoteDelete,
-    handleNoteAdd,
-
-    isNoteSelected,
-  } = useContext(AppContext);
+  const { handleNoteDelete, handleNoteAdd, notes, isNoteSelected } =
+    useContext(AppContext);
 
   const handleDeleteClick = () => {
     setShowDeleteModal(true);
@@ -41,7 +37,7 @@ export const AppBar = () => {
               variant="outline-secondary"
               className="d-flex align-items-center justify-content-center"
               onClick={handleDeleteClick}
-              disabled={isNoteSelected}
+              disabled={isNoteSelected || notes.length === 0}
             >
               <BsTrash className="mr-1" />
             </Button>

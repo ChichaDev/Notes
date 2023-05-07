@@ -1,19 +1,24 @@
-// import QuintaDB from "quintadb-js";
 import Dexie from 'dexie';
+import axios from 'axios';
+
+const API_KEY = 'aGr2CWiYfdS4kNWQ3dU8o3	';
+const API_BASE_URL = 'https://api.quintadb.com';
+
+const quintadbService = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${API_KEY}`,
+  },
+});
 
 class DBService {
   constructor() {
-    const dbType = process.env.DB_TYPE; // тип базы данных, указанный в параметре командной строки
+    const dbType = process.env.DB_TYPE;
 
     if (dbType === "quintadb") {
-      // this.db = new QuintaDB({
-      //   // параметры конфигурации для QuintaDB
-      //   apiKey: "YOUR_API_KEY",
-      //   dbId: "YOUR_DATABASE_ID",
-      //   collectionName: "notes",
-      // });
+      this.service = quintadbService;
     } else {
-      // используем indexedDB, как в предыдущем примере
       this.db = new Dexie("notes");
       this.db.version(1).stores({
         notes: "++id,title,description",
@@ -22,37 +27,58 @@ class DBService {
   }
 
   async getAllNotes() {
-    // if (this.db instanceof QuintaDB) {
-    //   const result = await this.db.find({});
-    //   return result.records;
-    //  } 
-    // else {
-    return await this.db.notes.toArray();
-    // }
+    if (this.service) {
+      try {
+        const response = await this.service.get('/notes');
+        return response.data;
+      } catch (error) {
+        console.error('Error while getting records from QuintaDB:', error);
+        throw error;
+      }
+    } else {
+      return await this.db.notes.toArray();
+    }
   }
 
   async addNewNote(note) {
-    // if (this.db instanceof QuintaDB) {
-    //   return await this.db.createRecord(note);
-    // } else {
-    return await this.db.notes.add(note);
-    // }
+    if (this.service) {
+      try {
+        const response = await this.service.post('/notes', note);
+        return response.data;
+      } catch (error) {
+        console.error('Error creating record in QuintaDB:', error);
+        throw error;
+      }
+    } else {
+      return await this.db.notes.add(note);
+    }
   }
 
   async deleteNoteById(id) {
-    // if (this.db instanceof QuintaDB) {
-    //   return await this.db.deleteRecord(id);
-    // } else {
-    return await this.db.notes.delete(id);
-    // }
+    if (this.service) {
+      try {
+        await this.service.delete(`/notes/${id}`);
+      } catch (error) {
+        console.error('Error while deleting record from QuintaDB:', error);
+        throw error;
+      }
+    } else {
+      return await this.db.notes.delete(id);
+    }
   }
 
   async updateNoteById(id, note) {
-    // if (this.db instanceof QuintaDB) {
-    //   return await this.db.updateRecord(id, note);
-    // } else {
-    return await this.db.notes.update(id, note);
-    //   }
+    if (this.service) {
+      try {
+        const response = await this.service.put(`/notes/${id}`, note);
+        return response.data;
+      } catch (error) {
+        console.error('Error while updating record in QuintaDB:', error);
+        throw error;
+      }
+    } else {
+      return await this.db.notes.update(id, note);
+    }
   }
 }
 

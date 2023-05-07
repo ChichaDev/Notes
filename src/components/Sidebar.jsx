@@ -23,7 +23,7 @@ export const SideBar = () => {
             borderRadius: "8px",
           }}
         >
-          {!hasFilteredNotes ? (
+          {notes.length === 0 || !hasFilteredNotes ? (
             <p className="text-muted text-center">Notes not found</p>
           ) : (
             <ListGroup>
