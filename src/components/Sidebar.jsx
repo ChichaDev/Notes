@@ -1,7 +1,10 @@
 import { useContext, useEffect } from "react";
+
 import { AppContext } from "../context/AppProvider";
+
+import { ListItem } from "./listItem/ListItem";
+
 import { Col, ListGroup } from "react-bootstrap";
-import { ListItem } from "./ListItem";
 
 export const SideBar = () => {
   const { notes, getAllNotes, hasFilteredNotes } = useContext(AppContext);

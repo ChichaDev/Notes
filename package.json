@@ -15,12 +15,13 @@
     "react-icons": "^4.8.0",
     "react-markdown": "^8.0.7",
     "react-scripts": "5.0.1",
+    "uuid": "^9.0.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start:indexeddb": "set DB_TYPE=indexeddb&& npm start",
-    "start:quintadb": "set DB_TYPE=quintadb&& npm start",
-    "start": "react-scripts start",
+    "start:indexeddb": "set DB_TYPE=indexeddb&& react-scripts start",
+    "start:quintadb": "set DB_TYPE=quintadb&& react-scripts start",
+    "start": "set DB_TYPE=indexeddb&& react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

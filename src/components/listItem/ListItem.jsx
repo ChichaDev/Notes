@@ -1,10 +1,14 @@
 import { useContext, useState } from "react";
-import { AppContext } from "../context/AppProvider";
+
+import { AppContext } from "../../context/AppProvider";
+
 import { Card } from "react-bootstrap";
+
 import "./ListItem.css";
 
 export const ListItem = ({ id, title, description }) => {
   const [selected, setSelected] = useState(false);
+
   const { selectedNoteId, setSelectedNoteId, setIsNoteSelected } =
     useContext(AppContext);
 
@@ -12,9 +16,11 @@ export const ListItem = ({ id, title, description }) => {
 
   const handleClickNotes = () => {
     setSelected(!selected);
+
     setSelectedNoteId((prevSelectedNoteId) =>
       prevSelectedNoteId === id ? null : id
     );
+
     setIsNoteSelected(false);
   };
 

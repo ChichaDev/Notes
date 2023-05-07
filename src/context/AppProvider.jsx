@@ -2,6 +2,8 @@ import React, { createContext, useState, useEffect } from "react";
 
 import dbService from "../services/dbService";
 
+import { v4 as uuidv4 } from "uuid";
+
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
@@ -17,7 +19,7 @@ export const AppProvider = ({ children }) => {
       const allNotes = await dbService.getAllNotes();
       setNotes(allNotes);
     } catch (error) {
-      console.error("Ошибка при получении заметок из indexedDB:", error);
+      console.error("Error getting notes from indexedDB:", error);
     }
   };
 
@@ -27,7 +29,7 @@ export const AppProvider = ({ children }) => {
 
   const handleNoteAdd = async () => {
     const newNote = {
-      id: Math.random().toString(36).substr(2, 9),
+      id: uuidv4(),
       title: "",
       description: "",
     };
@@ -68,17 +70,17 @@ export const AppProvider = ({ children }) => {
     <AppContext.Provider
       value={{
         hasFilteredNotes,
-        setHasFilteredNotes,
         searchValue,
+        isNoteSelected,
+        isEditing,
+        selectedNoteId,
+        notes,
+        setHasFilteredNotes,
         setSearchValue,
         handleSearchChange,
-        isNoteSelected,
         setIsNoteSelected,
-        isEditing,
         setIsEditing,
-        selectedNoteId,
         setSelectedNoteId,
-        notes,
         handleNoteDelete,
         handleNoteUpdate,
         handleNoteAdd,

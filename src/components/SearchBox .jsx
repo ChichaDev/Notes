@@ -1,6 +1,8 @@
 import { useContext } from "react";
-import { FormControl, InputGroup } from "react-bootstrap";
+
 import { AppContext } from "../context/AppProvider";
+
+import { FormControl, InputGroup } from "react-bootstrap";
 
 import { FaTimes } from "react-icons/fa";
 

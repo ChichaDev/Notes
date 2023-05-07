@@ -1,13 +1,14 @@
 import { useContext, useState } from "react";
+
 import { AppContext } from "../context/AppProvider";
-
-import { Navbar, Nav, Button } from "react-bootstrap";
-
-import { BsPlusSquare, BsTrash } from "react-icons/bs";
 
 import { SearchBox } from "./SearchBox ";
 import { ModalDelete } from "./ModalDelete";
+
+import { Navbar, Nav, Button } from "react-bootstrap";
 import { Container } from "react-bootstrap";
+
+import { BsPlusSquare, BsTrash } from "react-icons/bs";
 
 export const AppBar = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);

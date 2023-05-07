@@ -1,9 +1,10 @@
-import { Container, Row } from "react-bootstrap";
 import { AppBar } from "./components/AppBar";
 import { SideBar } from "./components/Sidebar";
 import { Workspace } from "./components/Workspace";
 
 import { AppProvider } from "./context/AppProvider";
+
+import { Container, Row } from "react-bootstrap";
 
 function App() {
   return (
