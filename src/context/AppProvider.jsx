@@ -7,6 +7,8 @@ export const AppContext = createContext();
 export const AppProvider = ({ children }) => {
   const [selectedNoteId, setSelectedNoteId] = useState(null);
   const [notes, setNotes] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isNoteSelected, setIsNoteSelected] = useState(true);
 
   const getAllNotes = async () => {
     try {
@@ -23,38 +25,47 @@ export const AppProvider = ({ children }) => {
 
   const handleNoteAdd = async () => {
     const newNote = {
+      id: Math.random().toString(36).substr(2, 9),
       title: "",
       description: "",
     };
+
     await dbService.addNewNote(newNote);
+
+    const updatedNotes = await dbService.getAllNotes();
+
+    setNotes(updatedNotes);
   };
 
   const handleNoteDelete = async () => {
     if (selectedNoteId) {
       await dbService.deleteNoteById(selectedNoteId);
     }
+    const updatedNotes = await dbService.getAllNotes();
+
+    setNotes(updatedNotes);
     console.log("Удалено из Базы");
   };
 
-  const handleNoteEdit = async () => {
+  const handleNoteUpdate = async (updatedNote) => {
     if (selectedNoteId) {
-      const noteToUpdate = await dbService.getNoteById(selectedNoteId);
-
-      // Выполните редактирование заметки из WORKSPACE передать контекст
-
-      // Сохраните отредактированную заметку в базу данных
-      await dbService.updateNoteById(selectedNoteId, noteToUpdate);
+      await dbService.updateNoteById(selectedNoteId, updatedNote);
+      await getAllNotes();
     }
   };
 
   return (
     <AppContext.Provider
       value={{
+        isNoteSelected,
+        setIsNoteSelected,
+        isEditing,
+        setIsEditing,
         selectedNoteId,
         setSelectedNoteId,
         notes,
         handleNoteDelete,
-        handleNoteEdit,
+        handleNoteUpdate,
         handleNoteAdd,
         getAllNotes,
       }}

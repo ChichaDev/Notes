@@ -11,11 +11,20 @@ import { ModalDelete } from "./ModalDelete";
 export const AppBar = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const { handleNoteDelete, handleNoteEdit, handleNoteAdd } =
-    useContext(AppContext);
+  const {
+    handleNoteDelete,
+    handleNoteAdd,
+    setIsEditing,
+    isEditing,
+    isNoteSelected,
+  } = useContext(AppContext);
 
   const handleDeleteClick = () => {
     setShowDeleteModal(true);
+  };
+
+  const handleEditClick = () => {
+    setIsEditing(!isEditing);
   };
 
   return (
@@ -35,6 +44,7 @@ export const AppBar = () => {
             variant="outline-secondary"
             className="d-flex align-items-center justify-content-center"
             onClick={handleDeleteClick}
+            disabled={isNoteSelected}
           >
             <BsTrash className="mr-1" />
           </Button>
@@ -42,7 +52,8 @@ export const AppBar = () => {
           <Button
             variant="outline-secondary"
             className="d-flex align-items-center justify-content-center"
-            onClick={handleNoteEdit}
+            onClick={handleEditClick}
+            disabled={isNoteSelected}
           >
             <BsPencilSquare className="mr-1" />
           </Button>

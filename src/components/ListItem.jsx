@@ -1,15 +1,12 @@
 import { useContext, useState } from "react";
-
 import { AppContext } from "../context/AppProvider";
-
 import { Card } from "react-bootstrap";
-
 import "./ListItem.css";
 
 export const ListItem = ({ id, title, description }) => {
   const [selected, setSelected] = useState(false);
-
-  const { selectedNoteId, setSelectedNoteId } = useContext(AppContext);
+  const { selectedNoteId, setSelectedNoteId, setIsNoteSelected } =
+    useContext(AppContext);
 
   const isSelected = selectedNoteId === id;
 
@@ -18,8 +15,11 @@ export const ListItem = ({ id, title, description }) => {
     setSelectedNoteId((prevSelectedNoteId) =>
       prevSelectedNoteId === id ? null : id
     );
-    console.log(id);
+    setIsNoteSelected(false);
   };
+
+  const truncatedDescription =
+    description.length > 20 ? description.slice(0, 20) + "..." : description;
 
   return (
     <div className="mb-2">
@@ -32,9 +32,11 @@ export const ListItem = ({ id, title, description }) => {
       >
         <Card.Body>
           <Card.Title className="text-dark font-weight-bold">
-            {title}
+            <span className="truncate-text">{title}</span>
           </Card.Title>
-          <Card.Text className="text-dark fs-6 small">{description}</Card.Text>
+          <Card.Text className="text-dark fs-6 small">
+            <span className="truncate-text">{truncatedDescription}</span>
+          </Card.Text>
         </Card.Body>
       </Card>
     </div>

@@ -1,107 +1,76 @@
 import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../context/AppProvider";
-
-import { Col, Form } from "react-bootstrap";
 import ReactMarkdown from "react-markdown";
-
-import dbService from "../services/dbService";
+import { Form } from "react-bootstrap";
+import { Col } from "react-bootstrap";
 
 export const Workspace = () => {
-  const { selectedNoteId, notes } = useContext(AppContext);
+  const { selectedNoteId, notes, handleNoteUpdate, isEditing } =
+    useContext(AppContext);
 
   const selectedNote = notes.find((note) => note.id === selectedNoteId);
-  const [editedNote, setEditedNote] = useState(null);
-  const [saveTimeout, setSaveTimeout] = useState(null);
+
+  const [title, setTitle] = useState(selectedNote?.title || "");
+  const [description, setDescription] = useState(
+    selectedNote?.description || ""
+  );
 
   useEffect(() => {
-    setEditedNote(selectedNote);
-  }, [selectedNote]);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setEditedNote((prevNote) => ({
-      ...prevNote,
-      [name]: value,
-    }));
-
-    // Отменить предыдущую задержку сохранения, если она была установлена
-    if (saveTimeout) {
-      clearTimeout(saveTimeout);
+    if (selectedNote) {
+      setTitle(selectedNote.title);
+      setDescription(selectedNote.description);
     }
+  }, [selectedNote, selectedNoteId]);
 
-    // Установить новую задержку сохранения
-    const newSaveTimeout = setTimeout(() => {
-      handleNoteUpdate();
-    }, 1000);
+  console.log("Workspace component");
 
-    setSaveTimeout(newSaveTimeout);
+  const handleTitleChange = (e) => {
+    setTitle(e.target.value);
+
+    const updatedNote = {
+      ...selectedNote,
+      title: e.target.value,
+    };
+    handleNoteUpdate(updatedNote);
   };
 
-  const handleNoteUpdate = async () => {
-    if (editedNote) {
-      await dbService.updateNoteById(selectedNoteId, editedNote);
-      console.log("Заметка обновлена:", editedNote);
-    }
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
+
+    const updatedNote = {
+      ...selectedNote,
+      description: e.target.value,
+    };
+    handleNoteUpdate(updatedNote);
   };
 
   return (
-    <Col md={10}>
+    <Col md={9}>
       <div>
         {selectedNote ? (
-          <Form>
-            <Form.Group controlId="noteTitle">
-              <Form.Label>Заголовок</Form.Label>
+          isEditing ? (
+            <div>
               <Form.Control
                 type="text"
-                name="title"
-                value={editedNote?.title || selectedNote.title}
-                onChange={handleInputChange}
+                value={title}
+                onChange={handleTitleChange}
               />
-            </Form.Group>
-            <Form.Group controlId="noteDescription">
-              <Form.Label>Описание</Form.Label>
               <Form.Control
                 as="textarea"
-                rows={3}
-                name="description"
-                value={editedNote?.description || selectedNote.description}
-                onChange={handleInputChange}
+                value={description}
+                onChange={handleDescriptionChange}
               />
-            </Form.Group>
-          </Form>
+            </div>
+          ) : (
+            <div>
+              <h2>{selectedNote.title}</h2>
+              <ReactMarkdown>{selectedNote.description}</ReactMarkdown>
+            </div>
+          )
         ) : (
-          <p>Выберите заметку из списка</p>
+          <p>Select a note from the list</p>
         )}
       </div>
     </Col>
   );
 };
-
-// import { useContext } from "react";
-// import { AppContext } from "../context/AppProvider";
-
-// import { Col } from "react-bootstrap";
-
-// import ReactMarkdown from "react-markdown";
-
-// export const Workspace = () => {
-//   const { selectedNoteId, notes } = useContext(AppContext);
-
-//   const selectedNote = notes.find((note) => note.id === selectedNoteId);
-
-//   return (
-//     <Col md={10}>
-//       <div>
-//         {selectedNote ? (
-//           <>
-//             <h2>{selectedNote.title}</h2>
-//             <p>{selectedNote.description}</p>
-//             <ReactMarkdown>{selectedNote.content}</ReactMarkdown>
-//           </>
-//         ) : (
-//           <p>Выберите заметку из списка</p>
-//         )}
-//       </div>
-//     </Col>
-//   );
-// };

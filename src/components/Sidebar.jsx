@@ -9,11 +9,13 @@ export const SideBar = () => {
   const { notes, getAllNotes } = useContext(AppContext);
 
   useEffect(() => {
-    getAllNotes();
-  }, [getAllNotes]);
+    if (notes.length === 0) {
+      getAllNotes();
+    }
+  }, [notes, getAllNotes]);
 
   return (
-    <Col md={2} className="bg-dark">
+    <Col md={3} className="bg-dark">
       <div className="d-flex flex-column justify-content-between vh-100 text-white">
         <div className="p-3">
           <ListGroup>
